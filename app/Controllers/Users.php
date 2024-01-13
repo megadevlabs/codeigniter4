@@ -5,15 +5,18 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\UsersModel;
+use App\Models\RegistrationModel;
 use App\Libraries\TestLibrary;
 
 class Users extends BaseController
 {
+    public $registrationModel;
     public $tl;
     public function __construct()
     {
         $this->tl = new TestLibrary();
         helper('form');
+        $this->registrationModel = new RegistrationModel();
     }
 
     public function index()
@@ -49,6 +52,8 @@ class Users extends BaseController
             "pageTitle" => "Codeigniter 4 Practice",
             "pageHeading" => "Users Registration Page",
         ];
+        $data['validation'] = null;
+        $session = \CodeIgniter\Config\Services::session();
         // $rules = [
         //     "username" => 'required|min_length[4]',
         //     "email" => 'required|valid_email',
@@ -85,7 +90,21 @@ class Users extends BaseController
         if ($this->request->getMethod() == 'post') {
             if ($this->validate($rules)) {
                 // Ready to save data
-                echo "Ready to save data.";
+                $cdata = [
+                    'username' => $this->request->getVar('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'email' => $this->request->getVar('email', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'mobile' => $this->request->getVar('mobile', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'password' => $this->request->getVar('password', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                ];
+
+                $status = $this->registrationModel->saveData($cdata);
+                if ($status) {
+                    $session->setTempdata('success', 'Thanks, we will get back you soon!', 3);
+                    return redirect()->to(current_url());
+                } else {
+                    $session->setTempdata('error', 'Sorry!, Try Again!', 3);
+                    return redirect()->to(current_url());
+                }
             } else {
                 $data['validation'] = $this->validator;
             }

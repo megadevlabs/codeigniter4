@@ -1,5 +1,13 @@
+  <?php
+  $page_session = \CodeIgniter\Config\Services::session();
+  ?>
   <?= $this->extend("layouts/base.php"); ?>
   <?= $this->section("mycontent"); ?>
+  <script>
+    setTimeout(function() {
+      $('#hideMsg').hide();
+    }, 3000);
+  </script>
   <section id="header">
     <h1>Website Header</h1>
   </section>
@@ -8,6 +16,14 @@
     <?php /*if (isset($validation)) :*/ ?>
     <h5><?php /*$validation->listErrors();*/ ?></h5>
     <?php /*endif;*/ ?>
+
+    <?php if ($page_session->getTempdata('success')) : ?>
+      <div id="hideMsg" style="background-color: green; color:white; padding:10px 20px;"><?= $page_session->getTempdata('success'); ?></div>
+    <?php endif; ?>
+
+    <?php if ($page_session->getTempdata('error')) : ?>
+      <div id="hideMsg" style="background-color: red; color:white; padding:10px 20px;"><?= $page_session->getTempdata('error'); ?></div>
+    <?php endif; ?>
 
     <?= form_open() ?>
     <p>
