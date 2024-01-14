@@ -18,7 +18,7 @@ class Email extends BaseConfig
     /**
      * The mail sending protocol: mail, sendmail, smtp
      */
-    public string $protocol = 'smtp';
+    public string $protocol = 'gsmtp';
 
     /**
      * The server path to Sendmail.
@@ -28,17 +28,17 @@ class Email extends BaseConfig
     /**
      * SMTP Server Hostname
      */
-    public string $SMTPHost = 'smtp.gmail.com';
+    public string $SMTPHost = 'gsmtp.gmail.com';
 
     /**
      * SMTP Username
      */
-    public string $SMTPUser = 'softengskr@gmail.com';
+    public string $SMTPUser = 'salahuddinkhanrony99@gmail.com';
 
     /**
      * SMTP Password
      */
-    public string $SMTPPass = '';
+    public string $SMTPPass = '.,.,skrRony07';
 
     /**
      * SMTP Port
@@ -53,7 +53,7 @@ class Email extends BaseConfig
     /**
      * Enable persistent SMTP connections
      */
-    public bool $SMTPKeepAlive = false;
+    public bool $SMTPKeepAlive = true;
 
     /**
      * SMTP Encryption.
