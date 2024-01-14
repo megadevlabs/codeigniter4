@@ -134,7 +134,7 @@ class Users extends BaseController
                     $filepath = 'public/favicon.ico';
                     $this->email->attach($filepath);
                     if ($this->email->send()) {
-                        $this->session->setTempdata('success', 'Account Created Successfully. Please activate your account', 3);
+                        $this->session->setTempdata('success', 'Account Created Successfully. Please activate your account within 1 hour.', 3);
                         return redirect()->to(current_url());
                     } else {
                         $this->session->setTempdata('error', 'Account Created Successfully. Sorry! unable to send activation link. Contact with Admin.', 3);

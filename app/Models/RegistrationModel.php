@@ -26,8 +26,10 @@ class RegistrationModel extends Model
     $builder->select('activation_date,uniid,status');
     $builder->where('uniid', $uniid);
     $result = $builder->get();
+    //echo count($result->getResultArray());
+    // $result->resultID->num_rows;
 
-    if ($builder->countAll() == 1) {
+    if (count($result->getResultArray()) == 1) {
       return $result->getRow();
     } else {
       return false;
