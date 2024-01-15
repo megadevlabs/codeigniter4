@@ -9,7 +9,7 @@
     }, 3000);
   </script>
   <section id="body-area">
-    <h3 class="py-4"><?= $pageHeading ?></h3>
+    <h3 class="py-4"><?= $pageinfo->pageHeading ?></h3>
     <?php /*if (isset($validation)) :*/ ?>
     <h5><?php /*$validation->listErrors();*/ ?></h5>
     <?php /*endif;*/ ?>

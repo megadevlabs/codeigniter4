@@ -7,6 +7,8 @@ use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\UsersModel;
 use App\Models\RegistrationModel;
 use App\Libraries\TestLibrary;
+use DateTime;
+use DateTimeZone;
 
 class Users extends BaseController
 {
@@ -53,7 +55,7 @@ class Users extends BaseController
 
     public function registration()
     {
-        $data = [
+        $data['pageinfo'] = (object)[
             "pageTitle" => "Codeigniter 4 Practice",
             "pageHeading" => "Users Registration Page",
         ];
@@ -116,8 +118,7 @@ class Users extends BaseController
                     'email' => $this->request->getVar('email', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                     'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
                     'mobile' => $this->request->getVar('mobile', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                    'uniid' => $uniid,
-                    'activation_date' => date('Y-m-d h:i:s')
+                    'uniid' => $uniid
                 ];
 
                 $status = $this->registrationModel->creteUser($cdata);
@@ -152,12 +153,12 @@ class Users extends BaseController
                 $data['validation'] = $this->validator;
             }
         }
-        return view('user_management/registration', $data);
+        return view('user_management/registration_view', $data);
     }
 
     public function activate($uniid = null)
     {
-        $data = [
+        $data['pageinfo'] = (object)[
             "pageTitle" => "Codeigniter 4 Practice",
             "pageHeading" => "Users Registration Page",
         ];
@@ -189,23 +190,18 @@ class Users extends BaseController
 
     public function verifyExpiryTime($regTime)
     {
-        $currentTime = now();
+        $date = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $currentTime = $date->format('Y-m-d H:i:s');
         $regtime = strtotime($regTime);
-        $diffTime = (int)$currentTime - (int)$regtime;
+        $diffTime = (int)strtotime($currentTime) - (int)$regtime;
+        // echo $currentTime . ' - ';
+        // echo $regtime . ' = ';
+        // echo $diffTime;
+        //exit;
         if (3600 > $diffTime) { // 3600 second = 1 hours
             return true;
         } else {
             return false;
         }
-    }
-
-    public function login()
-    {
-        $data = [
-            "pageTitle" => "Codeigniter 4 Practice",
-            "pageHeading" => "Users Login Page",
-        ];
-
-        return view('user_management/login', $data);
     }
 }

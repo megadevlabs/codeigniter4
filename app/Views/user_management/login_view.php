@@ -9,7 +9,7 @@
     }, 3000);
   </script>
   <section id="body-area">
-    <h3 class="py-4"><?= $pageHeading ?></h3>
+    <h3 class="py-4"><?= $pageinfo->pageHeading ?></h3>
     <?php /*if (isset($validation)) :*/ ?>
     <h5><?php /*$validation->listErrors();*/ ?></h5>
     <?php /*endif;*/ ?>
@@ -19,24 +19,30 @@
     <?php endif; ?>
 
     <?php if ($page_session->getTempdata('error')) : ?>
-      <div id="hideMsg" class="alert alert-error"><?= $page_session->getTempdata('error'); ?></div>
+      <div id="hideMsg" class="alert alert-danger"><?= $page_session->getTempdata('error'); ?></div>
+    <?php endif; ?>
+
+    <?php if (isset($validation)) : ?>
+      <div class="alert alert-danger">
+        <?= $validation->listErrors(); ?>
+      </div>
     <?php endif; ?>
 
     <?= form_open() ?>
     <div class="col-4">
       <div class="input-group mb-3">
-        <span class="input-group-text col-2" id="basic-addon1">Username</span>
-        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" name="username" value="<?= set_value('username'); ?>">
+        <span class="input-group-text col-2" id="basic-addon1">Email</span>
+        <input type="text" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" name="email" value="<?= set_value('email'); ?>">
         <span style="color: red;">
           <?php
           // if (isset($validation)) {
-          //   if ($validation->hasError('username')) {
-          //     echo $validation->getError('username');
+          //   if ($validation->hasError('email')) {
+          //     echo $validation->getError('email');
           //   }
           // }
 
           // get Validation Function from Form_helper
-          //echo validation_error($validation, 'username');
+          //echo validation_error($validation, 'email');
           ?>
         </span>
       </div>
