@@ -43,6 +43,8 @@
                   <div class="dropdown-divider"></div>
                   <li><a class="dropdown-item" href="<?= base_url(); ?>">Change Password</a></li>
                   <div class="dropdown-divider"></div>
+                  <li><a class="dropdown-item" href="<?= base_url(); ?>dashboard/login_activity">Login Activity</a></li>
+                  <div class="dropdown-divider"></div>
                   <li><a class="dropdown-item" href="<?= base_url(); ?>dashboard/logout">Logout</a></li>
                 </ul>
               </li>

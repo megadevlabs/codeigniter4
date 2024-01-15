@@ -17,4 +17,29 @@ class DashboardModel extends Model
       return false;
     }
   }
+
+  public function updateLogoutTime($id)
+  {
+    $builder = $this->db->table('login_activity');
+    $builder->where('id', $id);
+    $result = $builder->update(['logout_time' => date('Y-m-d h:i:s')]);
+
+    if ($this->db->affectedRows() > 0) {
+      return true;
+    }
+  }
+
+  public function getLoginUserInfo($uniid)
+  {
+    $builder = $this->db->table('login_activity');
+    $builder->where('uniid', $uniid);
+    $builder->orderBy('id', 'DESC');
+    $builder->limit(10);
+    $result = $builder->get();
+    if (count($result->getResultArray()) > 0) {
+      return $result->getResult();
+    } else {
+      return false;
+    }
+  }
 }

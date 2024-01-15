@@ -18,4 +18,15 @@ class LoginModel extends Model
       return false;
     }
   }
+
+  public function saveLoginInfo($data)
+  {
+    $builder = $this->db->table('login_activity');
+    $builder->insert($data);
+    if ($this->db->affectedRows() == 1) {
+      return $this->db->insertID();
+    } else {
+      return false;
+    }
+  }
 }

@@ -37,8 +37,19 @@ class Login extends BaseController
                 if ($userdata) {
                     if (password_verify($password, $userdata['password'])) {
                         if ($userdata['status'] == 'active') {
+                            $loginInfo = [
+                                'uniid' => $userdata['uniid'],
+                                'agent' => $this->getUserAgentInfo(),
+                                'ip' => $this->request->getIPAddress(),
+                                'login_time' => date('Y-m-d h:i:s'),
+                            ];
+                            $last_id = $this->loginModel->saveLoginInfo($loginInfo);
+                            if ($last_id) {
+                                $this->session->set('logged_info', $last_id);
+                            }
+
                             $this->session->set('logged_user', $userdata['uniid']);
-                            return redirect()->to(base_url() . '/dashboard');
+                            return redirect()->to(base_url() . 'dashboard');
                         } else {
                             $this->session->setTempdata('error', 'Please Activate your account. Contact Admin', 3);
                             return redirect()->to(current_url());
@@ -57,5 +68,20 @@ class Login extends BaseController
         }
 
         return view('user_management/login_view', $data);
+    }
+
+    public function getUserAgentInfo()
+    {
+        $agent = $this->request->getUserAgent();
+        if ($agent->isBrowser()) {
+            $currentAgent = $agent->getBrowser() . ' ' . $agent->getVersion();
+        } elseif ($agent->isRobot()) {
+            $currentAgent = $agent->getRobot();
+        } elseif ($agent->isMobile()) {
+            $currentAgent = $agent->getMobile();
+        } else {
+            $currentAgent = 'Unidentified User Agent';
+        }
+        return $currentAgent;
     }
 }

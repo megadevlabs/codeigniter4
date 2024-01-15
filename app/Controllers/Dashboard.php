@@ -32,8 +32,27 @@ class Dashboard extends BaseController
 
     public function logout()
     {
+        if (session()->has('logged_info')) {
+            $last_id = session()->get('logged_info');
+            $this->dModel->updateLogoutTime($last_id);
+        }
         session()->remove('logged_user');
         session()->destroy();
         return redirect()->to(base_url() . "/login");
+    }
+
+    public function login_activity()
+    {
+        $data['pageinfo'] = (object)[
+            "pageTitle" => "Codeigniter 4 Practice",
+            "pageHeading" => "Login Activity",
+        ];
+
+        $uniid = session()->get("logged_user");
+        $data['userdata'] = $this->dModel->getLoggedInUserData($uniid);
+
+        $data['login_info'] = $this->dModel->getLoginUserInfo($uniid);
+
+        return view('user_management/login_activity', $data);
     }
 }

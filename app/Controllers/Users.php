@@ -118,7 +118,8 @@ class Users extends BaseController
                     'email' => $this->request->getVar('email', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                     'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
                     'mobile' => $this->request->getVar('mobile', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                    'uniid' => $uniid
+                    'uniid' => $uniid,
+                    'activation_date' => date('Y-m-d h:i:s')
                 ];
 
                 $status = $this->registrationModel->creteUser($cdata);
@@ -190,14 +191,14 @@ class Users extends BaseController
 
     public function verifyExpiryTime($regTime)
     {
-        $date = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
-        $currentTime = $date->format('Y-m-d H:i:s');
+        //$date = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $currentTime = date('Y-m-d h:i:s');
         $regtime = strtotime($regTime);
         $diffTime = (int)strtotime($currentTime) - (int)$regtime;
         // echo $currentTime . ' - ';
         // echo $regtime . ' = ';
         // echo $diffTime;
-        //exit;
+        // exit;
         if (3600 > $diffTime) { // 3600 second = 1 hours
             return true;
         } else {
