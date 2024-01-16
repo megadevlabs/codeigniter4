@@ -10,7 +10,7 @@
     <div class="jumbotron jumbotron-fluid">
       <div class="container-fluid">
         <?php if ($userdata->profile_pic !== '') : ?>
-          <img class="py-4" height='180' src="" alt="Avatar Image">
+          <img class="py-4" height='180' src="<?= $userdata->profile_pic; ?>" alt="Avatar Image">
         <?php else : ?>
           <img class="py-4" height='180' src="<?= base_url(); ?>public/images/avatar.png" alt="Avatar Image">
         <?php endif; ?>

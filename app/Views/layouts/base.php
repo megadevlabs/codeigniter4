@@ -51,7 +51,7 @@
                   <div class="dropdown-divider"></div>
                   <li><a class="dropdown-item" href="<?= base_url(); ?>">Edit Profile</a></li>
                   <div class="dropdown-divider"></div>
-                  <li><a class="dropdown-item" href="<?= base_url(); ?>">Upload Avatar</a></li>
+                  <li><a class="dropdown-item" href="<?= base_url(); ?>dashboard/avatar">Upload Avatar</a></li>
                   <div class="dropdown-divider"></div>
                   <li><a class="dropdown-item" href="<?= base_url(); ?>">Change Password</a></li>
                   <div class="dropdown-divider"></div>

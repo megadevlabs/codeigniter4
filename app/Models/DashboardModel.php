@@ -18,14 +18,28 @@ class DashboardModel extends Model
     }
   }
 
+  public function updateAvatar($path, $id)
+  {
+    $builder = $this->db->table('users');
+    $builder->where('uniid', $id);
+    $res = $builder->update(['profile_pic' => $path]);
+    if ($res) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public function updateLogoutTime($id)
   {
     $builder = $this->db->table('login_activity');
     $builder->where('id', $id);
-    $result = $builder->update(['logout_time' => date('Y-m-d h:i:s')]);
+    $builder->update(['logout_time' => date('Y-m-d h:i:s')]);
 
     if ($this->db->affectedRows() > 0) {
       return true;
+    } else {
+      return false;
     }
   }
 

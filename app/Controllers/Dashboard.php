@@ -12,6 +12,7 @@ class Dashboard extends BaseController
     public $dModel;
     public function __construct()
     {
+        helper('form');
         $this->dModel = new DashboardModel();
     }
     public function index()
@@ -28,6 +29,54 @@ class Dashboard extends BaseController
         $data['userdata'] = $this->dModel->getLoggedInUserData($uniid);
 
         return view('user_management/dashboard_view', $data);
+    }
+
+    public function avatar()
+    {
+        $data['pageinfo'] = (object)[
+            "pageTitle" => "Codeigniter 4 Practice",
+            "pageHeading" => "My Avatar Upload",
+        ];
+
+        $uniid = session()->get("logged_user");
+        $data['userdata'] = $this->dModel->getLoggedInUserData($uniid);
+
+        if ($this->request->getMethod() == 'post') {
+            $rules = [
+                'avatar' => 'uploaded[avatar]|max_size[avatar,1024]|ext_in[avatar,png,jpg,gif]',
+            ];
+
+            if ($this->validate($rules)) {
+                $file = $this->request->getFile('avatar');
+                if ($file->isValid() && !$file->hasMoved()) {
+                    //$newName = $file->getName();
+                    $newName = $uniid . '.' . $file->getExtension(); // Custom Image Name Created
+                    if ($file->move(FCPATH . 'public\profile', $newName, true)) {
+                        $path = base_url() . 'public/profile/' . $file->getName();
+                        $status = $this->dModel->updateAvatar($path, session()->get('logged_user'));
+                        if ($status == true) {
+                            session()->setTempdata('success', 'Profile avatar is uploaded successfully.', 3);
+                            return redirect()->to(current_url());
+                        } else {
+                            session()->setTempdata('error', "Sorry! Unable to upload avatar!", 3);
+                            return redirect()->to(current_url());
+                        }
+                    } else {
+                        session()->setTempdata('error', $file->getErrorString(), 3);
+                        return redirect()->to(current_url());
+                    }
+                }
+                // echo "<pre>";
+                // print_r($file);
+                // echo "</pre>";
+            } else {
+                session()->setTempdata('error', 'You have Tryed to upload invalid file!', 3);
+                return redirect()->to(current_url());
+            }
+        } else {
+            $data['validation'] = $this->validator;
+        }
+        return view('user_management/avatar_view', $data);
     }
 
     public function logout()
