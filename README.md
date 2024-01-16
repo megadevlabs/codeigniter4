@@ -57,8 +57,7 @@ PHP version 7.4 or higher is required, with the following extensions installed:
 
 > **Warning**
 > The end of life date for PHP 7.4 was November 28, 2022. If you are
-> still using PHP 7.4, you should upgrade immediately. The end of life date
-> for PHP 8.0 will be November 26, 2023.
+> still using PHP 7.4, you should upgrade immediately.
 
 Additionally, make sure that the following extensions are enabled in your PHP:
 

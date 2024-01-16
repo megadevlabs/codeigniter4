@@ -31,6 +31,18 @@
             <?php if (session()->has("logged_user")) : ?>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Uploads
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="<?= base_url(); ?>fileupload/">Single Upload</a></li>
+                  <div class="dropdown-divider"></div>
+                  <li><a class="dropdown-item" href="<?= base_url(); ?>fileupload/multiupload">Multiple Uploads</a></li>
+                  <div class="dropdown-divider"></div>
+                </ul>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <?php /*$this->renderSection('show_username');*/ ?>
                   Welcome to <?php echo $userdata->username; ?>
                 </a>

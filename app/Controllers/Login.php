@@ -67,6 +67,33 @@ class Login extends BaseController
             }
         }
 
+        // Google Authentaction
+        // require_once(APPPATH . "libraries/vendor/autoload.php");
+
+        // $google_client = new \Google_Client();
+        // $google_client->setClientId('458928824518-36hauh2el1708dbfvadupb7qt6ln5h93.apps.googleusercontent.com');
+        // $google_client->setClientSecret('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');
+        // $google_client->setRedirectUri(base_url() . 'login');
+        // $google_client->addScope('email');
+        // $google_client->addScope('profile');
+
+        // if ($this->request->getVar('code')) {
+        //     $token = $google_client->fetchAccessTokenWithAuthCode($this->request->getVar('code'));
+        //     if (!isset($token['error'])) {
+        //         $google_client->setAccessToken($token['access_token']);
+        //         $this->session->set('access_token', $token['access_token']);
+        //         // To Get the profile data
+        //         $google_service = new \Google_Service_Oauth2($google_client);
+        //         $data = $google_service->userinfo->get();
+        //         print_r($data);
+        //         // exit;
+        //     }
+        // }
+
+        // if (!$this->session->get('access_token')) {
+        //     $data['loginButton'] = $google_client->createAuthUrl();
+        // }
+
         return view('user_management/login_view', $data);
     }
 

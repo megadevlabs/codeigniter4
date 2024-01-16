@@ -1,0 +1,12 @@
+{
+"license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "": "."
+        }
+    },
+  "require": {
+    "google/apiclient": "^2.15.3",
+	"monolog/monolog": "^3.2"
+  }
+}

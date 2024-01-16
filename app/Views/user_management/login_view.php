@@ -68,18 +68,22 @@
     </div>
 
     <div class="form-group">
-      <input type="submit" class="btn btn-primary" value="Login">
+      <input type="submit" class="btn btn-primary mr-4" value="Login">
       <a href="">Forgot Password?</a>
     </div>
+
+    <?php /*if (isset($loginButton)) :*/ ?>
+    <div class="form-group">
+      <a href="<?php /*$loginButton;*/ ?>">
+        <img src="<?= base_url('public/images/google.webp'); ?>" width="300" alt="Login With Google">
+      </a>
     </div>
+    <?php /*endif;*/ ?>
 
     <div class="form-group">
-      <a href="">Login With Google</a>
-    </div>
-    </div>
-
-    <div class="form-group">
-      <a href="">Login With Facebook</a>
+      <a href="">
+        <img src="<?= base_url('public/images/facebook.png'); ?>" width="300" alt="Login With Facebook">
+      </a>
     </div>
 
     <?= form_close() ?>

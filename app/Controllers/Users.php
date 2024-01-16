@@ -195,10 +195,10 @@ class Users extends BaseController
         $currentTime = date('Y-m-d h:i:s');
         $regtime = strtotime($regTime);
         $diffTime = (int)strtotime($currentTime) - (int)$regtime;
-        // echo $currentTime . ' - ';
+        // echo $currentTime . ' - ' . strtotime($currentTime) . '-';
         // echo $regtime . ' = ';
         // echo $diffTime;
-        // exit;
+        //exit;
         if (3600 > $diffTime) { // 3600 second = 1 hours
             return true;
         } else {
