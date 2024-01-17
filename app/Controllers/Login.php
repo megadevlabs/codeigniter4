@@ -163,4 +163,71 @@ class Login extends BaseController
         }
         return view('forgot_password', $data);
     }
+
+    public function reset_password($token = null)
+    {
+        $data['pageinfo'] = (object)[
+            "pageTitle" => "Codeigniter 4 Practice",
+            "pageHeading" => "Reset Password",
+        ];
+
+        if (!empty($token)) {
+            $userdata = $this->loginModel->verifyToken($token);
+            // print_r($userdata);
+            // exit;
+            if (!empty($userdata)) {
+                if ($this->checkExpiryDate($userdata->updated_at)) {
+                    if ($this->request->getMethod() == 'post') {
+                        $rules = [
+                            "password" => 'required|min_length[4]|max_length[20]',
+                            "cpassword" => 'required|matches[password]'
+                        ];
+                        if ($this->validate($rules)) {
+                            $password = password_hash($this->request->getVar('password'), PASSWORD_DEFAULT);
+
+                            if ($this->loginModel->updatePassword($password, $token)) {
+                                $this->session->setTempdata('success', 'Password reset successfully!', 3);
+                                return redirect()->to(base_url() . 'login');
+                            } else {
+                                $this->session->setTempdata('error', 'Sorry, Unable to reset your password! Try again.', 3);
+                                return redirect()->to(current_url());
+                            }
+                        } else {
+                            $data['validation'] = $this->validator;
+                        }
+                    }
+                } else {
+                    $this->session->setTempdata('error', 'Reset Password Link has been expired!', 3);
+                    //return redirect()->to(current_url());
+                }
+            } else {
+                $this->session->setTempdata('error', 'Unable to find user account', 3);
+                //return redirect()->to(current_url());
+            }
+        } else {
+            $this->session->setTempdata('error', 'Sorry! Unauthorized access', 3);
+            //return redirect()->to(current_url());
+        }
+
+        return view('reset_password', $data);
+    }
+
+    public function checkExpiryDate($updatedTime)
+    {
+        //$date = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $updated_time = strtotime($updatedTime);
+        $current_time = date('Y-m-d h:i:s');
+
+        $diffTime = (int)strtotime($current_time) - (int)$updated_time;
+        // Debugging below code
+        // echo $current_time . ' - ' . strtotime($updated_time) . '-';
+        // echo $updated_time . ' = ';
+        // echo $diffTime;
+        // exit;
+        if ($diffTime < 900) { // 900 second = 15 mins
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

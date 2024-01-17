@@ -42,4 +42,29 @@ class LoginModel extends Model
       return false;
     }
   }
+
+  public function verifyToken($token)
+  {
+    $builder = $this->db->table('users');
+    $builder->select('uniid,username,updated_at');
+    $builder->where('uniid', $token);
+    $result = $builder->get();
+    if (count($result->getResultArray()) == 1) {
+      return $result->getRow();
+    } else {
+      return false;
+    }
+  }
+
+  public function updatePassword($npwd, $id)
+  {
+    $builder = $this->db->table('users');
+    $builder->where('uniid', $id);
+    $builder->update(['password' => $npwd]);
+    if ($this->db->affectedRows() > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
