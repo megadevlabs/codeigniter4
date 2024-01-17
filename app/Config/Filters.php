@@ -24,6 +24,7 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
+        'datefilter'    => \App\Filters\DateFilter::class,
     ];
 
     /**
@@ -37,11 +38,13 @@ class Filters extends BaseConfig
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
+            'datefilter',
         ],
         'after' => [
             'toolbar',
             // 'honeypot',
             // 'secureheaders',
+            'datefilter',
         ],
     ];
 
