@@ -49,7 +49,7 @@
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="<?= base_url(); ?>dashboard/">Dashboard</a></li>
                   <div class="dropdown-divider"></div>
-                  <li><a class="dropdown-item" href="<?= base_url(); ?>">Edit Profile</a></li>
+                  <li><a class="dropdown-item" href="<?= base_url(); ?>dashboard/edit_profile">Edit Profile</a></li>
                   <div class="dropdown-divider"></div>
                   <li><a class="dropdown-item" href="<?= base_url(); ?>dashboard/avatar">Upload Avatar</a></li>
                   <div class="dropdown-divider"></div>

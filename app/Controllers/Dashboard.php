@@ -143,4 +143,41 @@ class Dashboard extends BaseController
 
         return view('user_management/change_password', $data);
     }
+
+    public function edit_profile()
+    {
+        $data['validation'] = null;
+        $data['pageinfo'] = (object)[
+            "pageTitle" => "Codeigniter 4 Practice",
+            "pageHeading" => "Edit Profile",
+        ];
+
+        $uniid = session()->get("logged_user");
+        $data['userdata'] = $this->dModel->getLoggedInUserData($uniid);
+
+        if ($this->request->getMethod() == 'post') {
+            $rules = [
+                "username" => 'required|min_length[4]|max_length[20]',
+                "mobile" => 'required|numeric|exact_length[10]'
+            ];
+            if ($this->validate($rules)) {
+                $userdata = [
+                    'username' => $this->request->getVar('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'mobile' => $this->request->getVar('mobile', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                ];
+
+                if ($this->dModel->updateUserInfo($userdata, $uniid)) {
+                    session()->setTempdata('success', "Profile updated successfully.", 3);
+                    return redirect()->to(current_url());
+                } else {
+                    session()->setTempdata('error', "Sorry! Unable to updated user profile info try again", 3);
+                    return redirect()->to(current_url());
+                }
+            } else {
+                $data['validation'] = $this->validator;
+            }
+        }
+
+        return view('user_management/edit_profile', $data);
+    }
 }
