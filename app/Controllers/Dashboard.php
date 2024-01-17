@@ -104,4 +104,43 @@ class Dashboard extends BaseController
 
         return view('user_management/login_activity', $data);
     }
+
+    public function change_password()
+    {
+        $data['pageinfo'] = (object)[
+            "pageTitle" => "Codeigniter 4 Practice",
+            "pageHeading" => "Change Password",
+        ];
+
+        $uniid = session()->get("logged_user");
+        $data['userdata'] = $this->dModel->getLoggedInUserData($uniid);
+        if ($this->request->getMethod() == 'post') {
+            $rules = [
+                "oldpassword" => 'required',
+                "newpassword" => 'required|min_length[4]|max_length[20]',
+                "cnewpassword" => 'required|matches[newpassword]'
+            ];
+            if ($this->validate($rules)) {
+                $opwd = $this->request->getVar('oldpassword');
+                $npwd = password_hash($this->request->getVar('newpassword'), PASSWORD_DEFAULT);
+
+                if (password_verify($opwd, $data['userdata']->password)) {
+                    if ($this->dModel->updatePassword($npwd, $uniid)) {
+                        session()->setTempdata('success', "Password updated successfully.", 3);
+                        return redirect()->to(current_url());
+                    } else {
+                        session()->setTempdata('error', "Sorry! Unable to chnge password try again", 3);
+                        return redirect()->to(current_url());
+                    }
+                } else {
+                    session()->setTempdata('error', "Sorry! Old password does not match with db password.", 3);
+                    return redirect()->to(current_url());
+                }
+            } else {
+                $data['validation'] = $this->validator;
+            }
+        }
+
+        return view('user_management/change_password', $data);
+    }
 }

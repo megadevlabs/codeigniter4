@@ -7,8 +7,8 @@ use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\UsersModel;
 use App\Models\RegistrationModel;
 use App\Libraries\TestLibrary;
+use App\Models\DashboardModel;
 use DateTime;
-use DateTimeZone;
 
 class Users extends BaseController
 {
@@ -16,12 +16,14 @@ class Users extends BaseController
     public $tl;
     public $session;
     public $email;
+    public $dModel;
     public function __construct()
     {
         $this->tl = new TestLibrary();
         helper('form');
         helper('date');
         $this->registrationModel = new RegistrationModel();
+        $this->dModel = new DashboardModel();
         $this->session = \Config\Services::session();
         $this->email = \Config\Services::email();
     }
@@ -59,6 +61,10 @@ class Users extends BaseController
             "pageTitle" => "Codeigniter 4 Practice",
             "pageHeading" => "Users Registration Page",
         ];
+
+        $uniid = session()->get("logged_user");
+        $data['userdata'] = $this->dModel->getLoggedInUserData($uniid);
+
         $data['validation'] = null;
         // $rules = [
         //     "username" => 'required|min_length[4]',
@@ -163,6 +169,9 @@ class Users extends BaseController
             "pageTitle" => "Codeigniter 4 Practice",
             "pageHeading" => "Users Registration Page",
         ];
+
+        $uniid = session()->get("logged_user");
+        $data['userdata'] = $this->dModel->getLoggedInUserData($uniid);
 
         if (!empty($uniid)) {
             $userData = $this->registrationModel->verifyUniid($uniid);

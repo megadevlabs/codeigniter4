@@ -30,6 +30,18 @@ class DashboardModel extends Model
     }
   }
 
+  public function updatePassword($npwd, $id)
+  {
+    $builder = $this->db->table('users');
+    $builder->where('uniid', $id);
+    $builder->update(['password' => $npwd]);
+    if ($this->db->affectedRows() > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public function updateLogoutTime($id)
   {
     $builder = $this->db->table('login_activity');
