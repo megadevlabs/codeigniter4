@@ -35,10 +35,17 @@ class Login extends BaseController
                 $email = $this->request->getVar('email');
                 $password = $this->request->getVar('password');
 
-                $throttler = \Config\Services::throttler();
-                $allow = $throttler->check('login', 4, MINUTE);
+                // $throttler = \Config\Services::throttler();
+                // $allow = $throttler->check('login', 4, MINUTE);
 
-                if ($allow) {
+                // IP Address Check Hit Mins
+                // $allowIP = $throttler->check($this->request->getIPAddress(),4,MINUTE);
+                // if ($allowIP === false) {
+                //     $this->session->setTempdata('error', 'Too Many Hit to server!');
+                //     return redirect()->to(current_url());
+                // }
+
+                // if ($allow) {
                     $userdata = $this->loginModel->verifyEmail($email);
                     if ($userdata) {
                         if (password_verify($password, $userdata['password'])) {
@@ -68,9 +75,9 @@ class Login extends BaseController
                         $this->session->setTempdata('error', 'Sorry! Email does not exist', 3);
                         return redirect()->to(current_url());
                     }
-                } else {
-                    $this->session->setTempdata('error', 'Max no. of login attempts. Try again after a minute', 3);
-                }
+                // } else {
+                //     $this->session->setTempdata('error', 'Max no. of login attempts. Try again after a minute', 3);
+                // }
             } else {
                 $data['validation'] = $this->validator;
             }

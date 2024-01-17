@@ -25,6 +25,7 @@ class Filters extends BaseConfig
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'isLoggedin'    => \App\Filters\LoginFilter::class,
+        'ipblocker'    => \App\Filters\IPBlocker::class,
     ];
 
     /**
@@ -39,6 +40,7 @@ class Filters extends BaseConfig
             // 'csrf',
             // 'invalidchars',
             // 'datefilter',
+            // 'ipblocker'
         ],
         'after' => [
             'toolbar',
@@ -59,7 +61,10 @@ class Filters extends BaseConfig
      * permits any HTTP method to access a controller. Accessing the controller
      * with a method you don't expect could bypass the filter.
      */
-    public array $methods = [];
+    public array $methods = [
+      // 'post' => ['ipblocker'],
+      // 'get' => ['ipblocker'],
+    ];
 
     /**
      * List of filter aliases that should run on any
@@ -70,5 +75,6 @@ class Filters extends BaseConfig
      */
     public array $filters = [
         'isLoggedin' => ['before' => ['dashboard/*']],
+        'ipblocker' => ['before' => ['login']],
     ];
 }
