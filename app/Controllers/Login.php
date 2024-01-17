@@ -35,34 +35,41 @@ class Login extends BaseController
                 $email = $this->request->getVar('email');
                 $password = $this->request->getVar('password');
 
-                $userdata = $this->loginModel->verifyEmail($email);
-                if ($userdata) {
-                    if (password_verify($password, $userdata['password'])) {
-                        if ($userdata['status'] == 'active') {
-                            $loginInfo = [
-                                'uniid' => $userdata['uniid'],
-                                'agent' => $this->getUserAgentInfo(),
-                                'ip' => $this->request->getIPAddress(),
-                                'login_time' => date('Y-m-d h:i:s'),
-                            ];
-                            $last_id = $this->loginModel->saveLoginInfo($loginInfo);
-                            if ($last_id) {
-                                $this->session->set('logged_info', $last_id);
-                            }
+                $throttler = \Config\Services::throttler();
+                $allow = $throttler->check('login', 4, MINUTE);
 
-                            $this->session->set('logged_user', $userdata['uniid']);
-                            return redirect()->to(base_url() . 'dashboard');
+                if ($allow) {
+                    $userdata = $this->loginModel->verifyEmail($email);
+                    if ($userdata) {
+                        if (password_verify($password, $userdata['password'])) {
+                            if ($userdata['status'] == 'active') {
+                                $loginInfo = [
+                                    'uniid' => $userdata['uniid'],
+                                    'agent' => $this->getUserAgentInfo(),
+                                    'ip' => $this->request->getIPAddress(),
+                                    'login_time' => date('Y-m-d h:i:s'),
+                                ];
+                                $last_id = $this->loginModel->saveLoginInfo($loginInfo);
+                                if ($last_id) {
+                                    $this->session->set('logged_info', $last_id);
+                                }
+
+                                $this->session->set('logged_user', $userdata['uniid']);
+                                return redirect()->to(base_url() . 'dashboard');
+                            } else {
+                                $this->session->setTempdata('error', 'Please Activate your account. Contact Admin', 3);
+                                return redirect()->to(current_url());
+                            }
                         } else {
-                            $this->session->setTempdata('error', 'Please Activate your account. Contact Admin', 3);
+                            $this->session->setTempdata('error', 'Sorry! Wrong password entered for the email', 3);
                             return redirect()->to(current_url());
                         }
                     } else {
-                        $this->session->setTempdata('error', 'Sorry! Wrong password entered for the email', 3);
+                        $this->session->setTempdata('error', 'Sorry! Email does not exist', 3);
                         return redirect()->to(current_url());
                     }
                 } else {
-                    $this->session->setTempdata('error', 'Sorry! Email does not exist', 3);
-                    return redirect()->to(current_url());
+                    $this->session->setTempdata('error', 'Max no. of login attempts. Try again after a minute', 3);
                 }
             } else {
                 $data['validation'] = $this->validator;
