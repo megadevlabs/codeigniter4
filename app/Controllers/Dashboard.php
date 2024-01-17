@@ -22,9 +22,9 @@ class Dashboard extends BaseController
             "pageHeading" => "Users Dashboard",
         ];
 
-        if (!session()->has('logged_user')) {
-            return redirect()->to(base_url() . "/login");
-        }
+        // if (!session()->has('logged_user')) {
+        //     return redirect()->to(base_url() . "/login");
+        // }
         $uniid = session()->get("logged_user");
         $data['userdata'] = $this->dModel->getLoggedInUserData($uniid);
 

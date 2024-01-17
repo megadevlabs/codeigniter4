@@ -24,7 +24,7 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
-        'datefilter'    => \App\Filters\DateFilter::class,
+        'isLoggedin'    => \App\Filters\LoginFilter::class,
     ];
 
     /**
@@ -38,13 +38,13 @@ class Filters extends BaseConfig
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
-            'datefilter',
+            // 'datefilter',
         ],
         'after' => [
             'toolbar',
             // 'honeypot',
             // 'secureheaders',
-            'datefilter',
+            // 'datefilter',
         ],
     ];
 
@@ -68,5 +68,7 @@ class Filters extends BaseConfig
      * Example:
      * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      */
-    public array $filters = [];
+    public array $filters = [
+        'isLoggedin' => ['before' => ['dashboard/*']],
+    ];
 }

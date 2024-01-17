@@ -76,8 +76,10 @@
         </div>
       </div>
     </nav>
+    <div style="display:block;height:80vh;">
+      <?= $this->renderSection("mycontent"); ?>
+    </div>
 
-    <?= $this->renderSection("mycontent"); ?>
     <footer class="bg-dark mt-4">
       <p class="py-4 text-white text-center">&copy;Copyright 2023 - All right reserved.</p>
       <!-- <h5>Custom Library Use -> <?php /*$hosst;*/ ?></h5> -->
