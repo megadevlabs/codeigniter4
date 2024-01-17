@@ -29,4 +29,17 @@ class LoginModel extends Model
       return false;
     }
   }
+
+  public function updatedAt($id)
+  {
+    $builder = $this->db->table('users');
+    $builder->where('uniid', $id);
+    $builder->update(['updated_at' => date('Y-m-d h:i:s')]);
+
+    if ($this->db->affectedRows() > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

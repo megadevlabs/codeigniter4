@@ -10,11 +10,13 @@ class Login extends BaseController
 {
     public $loginModel;
     public $session;
+    public $email;
     public function __construct()
     {
         helper('form');
         $this->loginModel = new LoginModel();
         $this->session = session();
+        $this->email = \Config\Services::email();
     }
 
     public function index()
@@ -110,5 +112,55 @@ class Login extends BaseController
             $currentAgent = 'Unidentified User Agent';
         }
         return $currentAgent;
+    }
+
+    public function forgot_password()
+    {
+        $data['pageinfo'] = (object)[
+            "pageTitle" => "Codeigniter 4 Practice",
+            "pageHeading" => "Forgot Password",
+        ];
+
+        $data['validation'] = null;
+
+        if ($this->request->getMethod() == 'post') {
+            $rules = [
+                'email' => 'required|valid_email',
+            ];
+            if ($this->validate($rules)) {
+                $email = $this->request->getVar('email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $userdata = $this->loginModel->verifyEmail($email);
+                if (!empty($userdata)) {
+                    if ($this->loginModel->updatedAt($userdata['uniid'])) {
+                        $to = $email;
+                        $subject = "Reset Password Link";
+                        $token = $userdata['uniid'];
+                        $message = 'Hi ' . $userdata['username'] . ",<br/><br/> Your reset password request has been received. Please click the below reset link to reset your password. <br/><br/><a href='" . base_url() . "/login/reset_password/" . $token . "' target='_blank'>Click here to reset password</a><br/><br/>Thanks<br/>Team";
+
+                        $this->email->setTo($to);
+                        $this->email->setFrom('info@megadevlabs.com', 'Info');
+                        $this->email->setSubject($subject);
+                        $this->email->setMessage($message);
+
+                        if ($this->email->send()) {
+                            $this->session->setTempdata('success', 'Reset password link sent to your registered email. Please verify within 15 mins', 3);
+                            return redirect()->to(current_url());
+                        } else {
+                            $data = $this->email->printDebugger(['headers']);
+                            print_r($data);
+                        }
+                    } else {
+                        $this->session->setTempdata('error', 'Sorry! Unable to update, Tray again.', 3);
+                        return redirect()->to(current_url());
+                    }
+                } else {
+                    $this->session->setTempdata('error', 'Sorry! Email does not exist', 3);
+                    return redirect()->to(current_url());
+                }
+            } else {
+                $data['validation'] = $this->validator;
+            }
+        }
+        return view('forgot_password', $data);
     }
 }

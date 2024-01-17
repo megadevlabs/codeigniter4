@@ -69,7 +69,7 @@
 
     <div class="form-group">
       <input type="submit" class="btn btn-primary mr-4" value="Login">
-      <a href="">Forgot Password?</a>
+      <a href="<?= base_url(); ?>login/forgot_password">Forgot Password?</a>
     </div>
 
     <?php /*if (isset($loginButton)) :*/ ?>
