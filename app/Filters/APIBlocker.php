@@ -7,7 +7,7 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
-class IPBlocker implements FilterInterface
+class APIBlocker implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -26,9 +26,10 @@ class IPBlocker implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
+        // md5($request->getIPAddress())
         $throttler = Services::throttler();
-        if ($throttler->check(md5($request->getIPAddress()), 4, MINUTE) === false) {
-            return Services::response()->setStatusCode(429)->setBody("Too many Hits");
+        if ($throttler->check('testapi', 4, MINUTE) === false) {
+            return Services::response()->setStatusCode(429)->setBody(json_encode(['message' => "Too many Hits to server. Please try after sometimes."]));
         }
     }
 

@@ -26,6 +26,7 @@ class Filters extends BaseConfig
         'secureheaders' => SecureHeaders::class,
         'isLoggedin'    => \App\Filters\LoginFilter::class,
         'ipblocker'    => \App\Filters\IPBlocker::class,
+        'apblocker'    => \App\Filters\APIBlocker::class,
     ];
 
     /**
@@ -62,8 +63,8 @@ class Filters extends BaseConfig
      * with a method you don't expect could bypass the filter.
      */
     public array $methods = [
-      // 'post' => ['ipblocker'],
-      // 'get' => ['ipblocker'],
+        // 'post' => ['ipblocker'],
+        // 'get' => ['ipblocker'],
     ];
 
     /**
@@ -76,5 +77,6 @@ class Filters extends BaseConfig
     public array $filters = [
         'isLoggedin' => ['before' => ['dashboard/*']],
         'ipblocker' => ['before' => ['login']],
+        'apblocker' => ['before' => ['products/*']],
     ];
 }
