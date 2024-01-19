@@ -43,6 +43,18 @@
 
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Employees
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="<?= base_url(); ?>employee/addemp/">Add Employee</a></li>
+                  <div class="dropdown-divider"></div>
+                  <li><a class="dropdown-item" href="<?= base_url(); ?>employee/viewEmp">View Employee</a></li>
+                  <div class="dropdown-divider"></div>
+                </ul>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <?php /*$this->renderSection('show_username');*/ ?>
                   Welcome to <?php echo $userdata->username; ?>
                 </a>
@@ -76,7 +88,7 @@
         </div>
       </div>
     </nav>
-    <div style="display:block;height:80vh;">
+    <div style="display:block;min-height:80vh;height:auto;">
       <?= $this->renderSection("mycontent"); ?>
     </div>
 

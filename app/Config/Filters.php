@@ -76,7 +76,7 @@ class Filters extends BaseConfig
      */
     public array $filters = [
         'isLoggedin' => ['before' => ['dashboard/*']],
-        'ipblocker' => ['before' => ['login']],
-        'apblocker' => ['before' => ['products/*']],
+         'ipblocker' => ['before' => ['login']],
+         'apblocker' => ['before' => ['products/*']],
     ];
 }
