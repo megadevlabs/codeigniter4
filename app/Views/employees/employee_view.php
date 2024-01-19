@@ -1,3 +1,6 @@
+<?php
+$page_session = \Config\Services::session();
+?>
 <?= $this->extend('layouts/base'); ?>
 
 <?php /*$this->section('show_username');*/ ?>
@@ -9,6 +12,23 @@
   <div class="row">
 
     <h4 class="mt-4"><?= $pageinfo->pageHeading; ?></h4>
+
+    <?php if (!empty($errors)) : ?>
+      <div class="alert alert-danger">
+        <?php foreach ($errors as $field => $error) : ?>
+          <p><?= $error; ?></p>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+
+    <?php if ($page_session->getTempdata('success')) : ?>
+      <div id="hideMsg" class="alert alert-success"><?= $page_session->getTempdata('success'); ?></div>
+    <?php endif; ?>
+
+    <?php if ($page_session->getTempdata('error')) : ?>
+      <div id="hideMsg" class="alert alert-danger"><?= $page_session->getTempdata('error'); ?></div>
+    <?php endif; ?>
+
     <?php if (count($employees) > 0) : ?>
     <?php else : ?>
       <h5>Sorry! No Employees Found.</h5>
@@ -40,8 +60,8 @@
             <td><?= $emp->city; ?></td>
             <td><?= $emp->created_at; ?></td>
             <td>
-              <a href="" class="btn btn-info">Edit</a>
-              <a href="" class="btn btn-danger">Delete</a>
+              <a href="<?= base_url(); ?>employee/editemp/<?= $emp->id; ?>" class="btn btn-info">Edit</a>
+              <a href="<?= base_url(); ?>employee/deleteemp/<?= $emp->id; ?>" onclick="return confirm('Are you sure you want to delete?');" class="btn btn-danger">Delete</a>
             </td>
           </tr>
         <?php endforeach; ?>

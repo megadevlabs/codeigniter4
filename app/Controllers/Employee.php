@@ -59,11 +59,42 @@ class Employee extends Controller
 
     public function editEmp($id = null)
     {
-        //
+        $data['pageinfo'] = (object)[
+            "pageTitle" => "Codeigniter 4 Practice",
+            "pageHeading" => "Edit Employee",
+        ];
+        $uniid = session()->get("logged_user");
+        $data['userdata'] = $this->dModel->getLoggedInUserData($uniid);
+        if ($this->request->getMethod() == 'post') {
+            $empData = [
+                'name' => $this->request->getVar('name', FILTER_SANITIZE_STRING),
+                'mobile' => $this->request->getVar('mobile'),
+                'salary' => $this->request->getVar('salary', FILTER_SANITIZE_STRING),
+                'designation' => $this->request->getVar('designation', FILTER_SANITIZE_STRING),
+                'city' => $this->request->getVar('city', FILTER_SANITIZE_STRING),
+            ];
+            if ($this->empModel->update($id, $empData) == true) {
+                session()->setTempdata('success', 'Employee updated successfully', 3);
+                return redirect()->to(current_url());
+            }
+        }
+
+        //Method-1
+        // $data['emp'] = $this->empModel->find($id);
+        // $data['errors'] = $this->empModel->errors();
+        // return view('employees/empedit_view', ['emp' => $this->empModel->find($id), 'errors' => $this->empModel->errors()]);
+
+        //Method-2
+        $data['emp'] = $this->empModel->find($id);
+        $data['errors'] = $this->empModel->errors();
+        return view('employees/empedit_view', $data);
     }
 
-    public function deleteEmp()
+    public function deleteEmp($id = null)
     {
-        //
+        if ($this->empModel->where('id', $id)->delete()) {
+            session()->setTempdata('success', 'Employee deleted successfully', 3);
+            return redirect()->to(base_url() . '/employee/viewemp');
+        }
     }
 }
